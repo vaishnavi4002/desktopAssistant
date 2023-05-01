@@ -15,7 +15,7 @@ def record_audio(duration, sr):
 # Define main function for voice assistant
 def voice_assistant():
     sr = 44100  # Sample rate for recording
-    duration = 5  # Duration of recording in seconds
+    duration = 10  # Duration of recording in seconds
    
 
  
@@ -29,8 +29,7 @@ def voice_assistant():
     plt.ylabel("Amplitude")
     plt.show()
         
-        # Wait for a moment before recording again
-    time.sleep(1)
+    
 
 # Start voice assistant
 voice_assistant()

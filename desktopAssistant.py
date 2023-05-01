@@ -5,8 +5,10 @@ import wikipedia #pip install wikipedia
 import webbrowser
 import os
 import smtplib
-
-
+import pyjokes
+import ctypes
+from ecapture import ecapture as ec
+import subprocess
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 # print(voices[1].id)
@@ -53,7 +55,9 @@ def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('vaishnaviwani18@gmail.com', 'Vwani2004')
+     
+    # Enable low security in gmail
+    server.login('vaishnaviwani18@gmail.com', 'Vwani@2004')
     server.sendmail('vaishnaviwani18@gmail.com', to, content)
     server.close()
 
@@ -81,8 +85,9 @@ if __name__ == "__main__":
             webbrowser.open("google.com")
 
         elif 'open gfg' in query:
-            webbrowser.open("geeksforgeeks.org")   
-
+            webbrowser.open("geeksforgeeks.org") 
+        elif 'who are you'in query:
+            speak("i'm Ela. Your desktop voice assistant") 
 
         elif 'play music' in query:
             music_dir = 'song'
@@ -100,22 +105,38 @@ if __name__ == "__main__":
         elif  'bye' in query or 'stop' in query:
              hour = int(datetime.datetime.now().hour)
              if hour >= 21 and hour < 6:
-                speak("Good night sir, take care!")
+                speak("Good night, take care!")
              else:
-                speak('Have a good day sir!,')
+                speak('Have a good day !,')
              exit()
         elif 'plot' in query:
             with open('assistant.py') as f:
              code = compile(f.read(), 'assistant.py', 'exec')
              exec(code)
-            
-        '''elif 'email to me' in query:
+        elif 'joke' in query:
+            speak(pyjokes.get_joke())
+        
+        elif 'search' in query or 'play' in query:
+             
+            query = query.replace("search", "")
+            query = query.replace("play", "")         
+            webbrowser.open(query)
+        elif 'lock window' in query:
+                speak("locking the device")
+                ctypes.windll.user32.LockWorkStation()
+        elif "camera" in query or "take a photo" in query:
+            ec.capture(0, "Jarvis Camera ", "img.jpg")
+        elif 'shutdown system' in query:
+                speak("Hold On a Sec ! Your system is on its way to shut down")
+                subprocess.call('shutdown / p /f')
+        elif 'send a mail' in query:
             try:
                 speak("What should I say?")
                 content = takeCommand()
-                to = "gmail@viit.ac.in"    
+                speak("whome should i send")
+                to = input()   
                 sendEmail(to, content)
-                speak("Email has been sent!")
+                speak("Email has been sent !")
             except Exception as e:
                 print(e)
-                speak("Sorry my friend. I am not able to send this email")'''
+                speak("I am not able to send this email")
